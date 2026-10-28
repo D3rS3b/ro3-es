@@ -66,6 +66,19 @@ En Lutris: **Configuración del juego → Sistema → Variables de entorno** y a
 `WINEDLLOVERRIDES=winhttp=n,b`. Sin esto el juego arranca sin cargar el plugin
 (no aparece `BepInEx/LogOutput.log`).
 
+### Versión de BepInEx: usar 5.4.22
+
+Las versiones **5.4.23.x fallan** en este cliente (Unity 2022 + Mono) con:
+
+```
+MissingMethodException: Method not found:
+System.Reflection.Module.GetPEKind(...)
+```
+
+El preloader no llega a cargar y no se genera `LogOutput.log`. El instalador ya
+fija `5.4.22` por defecto; no lo cambies salvo que sepas que el fallo está
+resuelto aguas arriba.
+
 ## Estructura
 
 ```
