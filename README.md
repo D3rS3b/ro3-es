@@ -4,8 +4,10 @@ Capa de traducción **en tiempo de ejecución** para el cliente de Ragnarok Onli
 (Unity 2022 + XLua, Mono). No modifica ni un byte del juego: se engancha al sistema
 de texto (TextMeshPro) y sustituye las cadenas por su versión en español.
 
-> **Estado:** v0.1 — esqueleto funcional. El plugin compila y engancha TMP/UGUI,
-> pero aún no se ha validado en partida.
+> **Estado:** v0.1 — **bloqueado**. El plugin compila y engancha TMP/UGUI, pero
+> ningún loader llega a cargarlo: el cliente usa un `mscorlib` recortado y falla
+> en `Module.GetPEKind` (BepInEx) y `ServicePointManager` (MelonLoader).
+> Detalle y pruebas en [`docs/arquitectura.md`](docs/arquitectura.md#bloqueo-conocido-28102026).
 
 ## Por qué no es un parche de archivos
 

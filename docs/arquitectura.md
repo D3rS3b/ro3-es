@@ -54,6 +54,27 @@ Juego → TMP_Text.set_text / UI.Text.set_text
 - **Placeholders**: `{0}`, `%s`, etiquetas rich text y variables deben
   conservarse; `tools/validate.py` lo comprueba.
 
+## Bloqueo conocido (28/10/2026)
+
+Probado sobre el cliente `EN-PTBR 2026.08.16` (Unity 2022.3.62f3, Mono):
+
+- El `mscorlib.dll` del juego está **recortado**: no existe
+  `System.Reflection.Module.GetPEKind`, y `System.dll` tampoco expone
+  `ServicePointManager.set_ServerCertificateValidationCallback`.
+- **BepInEx 5.4.21/5.4.22/5.4.23.x** fallan en `PreloaderRunner.PreloaderPreMain`
+  con `MissingMethodException: GetPEKind` (`preloader_*.log`).
+- **MelonLoader 0.7.3** falla en `MelonLoader.Core.Initialize` por
+  `set_ServerCertificateValidationCallback`.
+- `dllSearchPathOverride` de Doorstop 4.6 (`C:\...` y `Z:\...`) **no tiene
+  efecto**: Mono ya resolvió `mscorlib` cuando se aplica.
+- Sustituir `ro3_Data/Managed/mscorlib.dll` por el corlib completo de
+  `unity.bepinex.dev/corlibs/2022.3.62.zip` **rompe el arranque**: el proceso
+  muere antes de inicializar Unity y el launcher verifica/restaura archivos.
+
+**Conclusión:** la modificación en runtime está bloqueada por las librerías
+recortadas. Alternativas: esperar a un loader que no dependa de `GetPEKind`, o
+una capa externa por OCR (peor experiencia, pero sin tocar el cliente).
+
 ## Fases
 
 1. **Captura** (actual): hook + `capture.jsonl`.
