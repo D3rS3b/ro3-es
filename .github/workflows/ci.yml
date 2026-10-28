@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validar-traducciones:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Comprobar sintaxis de las herramientas
+        run: python -m compileall -q tools
+
+      - name: Validar data/es.jsonl
+        run: python tools/validate.py data/es.jsonl
+
+      - name: Probar ida y vuelta CSV
+        run: |
+          python tools/csv_io.py export --file data/es.jsonl --out /tmp/t.csv
+          python tools/csv_io.py import --file /tmp/roundtrip.jsonl --csv /tmp/t.csv
+          python tools/validate.py /tmp/roundtrip.jsonl
+
+  compilar-plugin:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Referencias del juego (secreto RO3_MANAGED_B64)
+        env:
+          RO3_MANAGED_B64: ${{ secrets.RO3_MANAGED_B64 }}
+        run: |
+          if [ -z "$RO3_MANAGED_B64" ]; then
+            echo "::warning::Sin el secreto RO3_MANAGED_B64 no se puede compilar."
+            exit 0
+          fi
+          mkdir -p lib/ro3_Data
+          echo "$RO3_MANAGED_B64" | base64 -d > /tmp/managed.zip
+          unzip -q /tmp/managed.zip -d lib/ro3_Data/Managed
+
+      - name: Build
+        env:
+          RO3_GAME_DIR: ${{ github.workspace }}/lib
+        run: |
+          if [ ! -d lib/ro3_Data/Managed ]; then
+            echo "Sin referencias: build omitido."
+            exit 0
+          fi
+          dotnet build src/Ro3Es.Plugin -c Release

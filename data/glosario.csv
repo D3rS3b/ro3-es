@@ -1,0 +1,30 @@
+term,es,notes
+Level,Nivel,estadística y nivel de personaje
+Experience,Experiencia,EXP
+HP,HP,no traducir
+SP,SP,no traducir
+Inventory,Inventario,
+Equipment,Equipamiento,
+Weapon,Arma,
+Armor,Armadura,
+Accessory,Accesorio,
+Quest,Misión,
+Party,Grupo,no usar "Partido"
+Guild,Gremio,no usar "Guild" ni "Clan"
+Skill,Habilidad,
+Stat,Atributo,
+Damage,Daño,
+Defense,Defensa,
+Attack,Ataque,
+Critical,Crítico,
+Dungeon,Mazmorra,
+Boss,Jefe,
+NPC,NPC,no traducir
+Server,Servidor,
+Channel,Canal,
+Trade,Intercambio,
+Shop,Tienda,
+Storage,Almacén,
+Mail,Correo,
+Friend,Amigo,
+Whisper,Susurro,

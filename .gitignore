@@ -1,0 +1,24 @@
+# Binarios y artefactos
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.idea/
+
+# SDK local
+.dotnet/
+
+# Referencias locales al juego (nunca subir DLLs del cliente)
+lib/
+*.dll
+!src/**/bin/**
+
+# Capturas generadas en partida
+data/captures/
+capture.jsonl
+
+# Temporales
+*.tmp
+*.log
+__pycache__/

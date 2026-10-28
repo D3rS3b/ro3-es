@@ -1,0 +1,13 @@
+{"src":"Settings","dst":"Ajustes","status":"review","ctx":"UI/MainMenu"}
+{"src":"Inventory","dst":"Inventario","status":"review","ctx":"UI/MainMenu"}
+{"src":"Character","dst":"Personaje","status":"review","ctx":"UI/MainMenu"}
+{"src":"Quest","dst":"Misión","status":"review","ctx":"UI/MainMenu"}
+{"src":"Guild","dst":"Gremio","status":"review","ctx":"UI/MainMenu"}
+{"src":"Party","dst":"Grupo","status":"review","ctx":"UI/MainMenu"}
+{"src":"Level","dst":"Nivel","status":"review","ctx":"UI/Character"}
+{"src":"Skills","dst":"Habilidades","status":"review","ctx":"UI/Character"}
+{"src":"Equipment","dst":"Equipamiento","status":"review","ctx":"UI/Character"}
+{"src":"Confirm","dst":"Confirmar","status":"review","ctx":"UI/Common"}
+{"src":"Cancel","dst":"Cancelar","status":"review","ctx":"UI/Common"}
+{"src":"Close","dst":"Cerrar","status":"review","ctx":"UI/Common"}
+{"src":"OK","dst":"OK","status":"keep","ctx":"UI/Common"}
