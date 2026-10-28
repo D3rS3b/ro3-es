@@ -7,7 +7,7 @@
 set -euo pipefail
 
 GAME_DIR="${1:?uso: $0 /ruta/a/ROO_PC (la carpeta que contiene ro3.exe)}"
-BEPINEX_VER="${BEPINEX_VER:-5.4.21}"
+BEPINEX_VER="${BEPINEX_VER:-latest}"
 BEPINEX_URL="${BEPINEX_URL:-}"
 
 [[ -f "$GAME_DIR/ro3.exe" ]] || { echo "ERROR: no encuentro ro3.exe en $GAME_DIR" >&2; exit 1; }
@@ -16,17 +16,22 @@ TMPDIR_INSTALL="$(mktemp -d)"
 trap 'rm -rf "$TMPDIR_INSTALL"' EXIT
 
 if [[ -z "$BEPINEX_URL" ]]; then
-  for candidate in \
-    "https://github.com/BepInEx/BepInEx/releases/download/v${BEPINEX_VER}/BepInEx_win_x64_${BEPINEX_VER}.0.zip" \
-    "https://github.com/BepInEx/BepInEx/releases/download/v${BEPINEX_VER}.0/BepInEx_win_x64_${BEPINEX_VER}.0.zip"
-  do
-    echo "Probando $candidate"
-    if curl -fL --retry 2 -o "$TMPDIR_INSTALL/bepinex.zip" "$candidate"; then
-      BEPINEX_URL="$candidate"
-      break
-    fi
-  done
+  if [[ "$BEPINEX_VER" == "latest" ]]; then
+    # Última release 5.x con binario para Windows x64 (requiere jq).
+    BEPINEX_URL="$(curl -sS "https://api.github.com/repos/BepInEx/BepInEx/releases?per_page=15" \
+      | jq -r '[.[] | select(.tag_name | startswith("v5."))][0].assets[]
+               | select(.name | test("win_x64.*\\.zip$"))
+               | .browser_download_url' | head -1)"
+  else
+    BEPINEX_URL="https://github.com/BepInEx/BepInEx/releases/download/v${BEPINEX_VER}/BepInEx_win_x64_${BEPINEX_VER}.zip"
+  fi
 fi
+
+[[ -n "$BEPINEX_URL" && "$BEPINEX_URL" != "null" ]] \
+  || { echo "ERROR: no se pudo resolver la URL de BepInEx." >&2; exit 1; }
+
+echo "Descargando $BEPINEX_URL"
+curl -fL --retry 2 -o "$TMPDIR_INSTALL/bepinex.zip" "$BEPINEX_URL"
 
 [[ -f "$TMPDIR_INSTALL/bepinex.zip" ]] || { echo "ERROR: no se pudo descargar BepInEx." >&2; exit 1; }
 

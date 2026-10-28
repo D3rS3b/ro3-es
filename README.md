@@ -54,6 +54,18 @@ cp src/Ro3Es.Plugin/bin/Release/netstandard2.0/ro3-es.dll \
 cp data/es.jsonl "/home/$USER/Games/RO3/ROO_PC/BepInEx/plugins/ro3-es/"
 ```
 
+### Proton / Wine
+
+BepInEx necesita que se use su `winhttp.dll` en lugar del integrado de Wine:
+
+```bash
+export WINEDLLOVERRIDES="winhttp=n,b"
+```
+
+En Lutris: **Configuración del juego → Sistema → Variables de entorno** y añade
+`WINEDLLOVERRIDES=winhttp=n,b`. Sin esto el juego arranca sin cargar el plugin
+(no aparece `BepInEx/LogOutput.log`).
+
 ## Estructura
 
 ```
