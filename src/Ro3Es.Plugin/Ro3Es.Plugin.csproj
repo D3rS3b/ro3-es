@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(GameDir)' != ''">
+    <Reference Include="UnityEngine">
+      <HintPath>$(GameDir)/ro3_Data/Managed/UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GameDir)/ro3_Data/Managed/Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
